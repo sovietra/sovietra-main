@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { buildOpenMeteoForecastUrl, getWeatherDescription, getWeatherIconName } from "@/lib/weather";
-import { Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle, Wind, CloudFog } from "lucide-react";
+import { Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle, CloudFog } from "lucide-react";
 
 const WIDGET_STORAGE_KEY = "desktop-widget-positions";
 
@@ -218,12 +218,11 @@ function WeatherIcon({ code, size = 22 }: { code: number; size?: number }) {
   const name = getWeatherIconName(code);
   const props = { size, className: "text-white/90" };
   if (name === "sun") return <Sun {...props} />;
-  if (name === "cloud-rain") return <CloudRain {...props} />;
-  if (name === "cloud-snow") return <CloudSnow {...props} />;
-  if (name === "cloud-lightning") return <CloudLightning {...props} />;
-  if (name === "cloud-drizzle") return <CloudDrizzle {...props} />;
-  if (name === "wind") return <Wind {...props} />;
-  if (name === "cloud-fog") return <CloudFog {...props} />;
+  if (name === "rain") return <CloudRain {...props} />;
+  if (name === "snow") return <CloudSnow {...props} />;
+  if (name === "thunder") return <CloudLightning {...props} />;
+  if (name === "drizzle") return <CloudDrizzle {...props} />;
+  if (name === "fog") return <CloudFog {...props} />;
   return <Cloud {...props} />;
 }
 
