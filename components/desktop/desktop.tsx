@@ -41,6 +41,7 @@ import type { MessagesNotificationPayload } from "@/types/messages/notification"
 import type { MessagesConversationSelectRequest } from "@/types/messages/selection";
 import { getAppById } from "@/lib/app-config";
 import { DesktopWidgets } from "./desktop-widgets";
+import { Launchpad } from "./launchpad";
 
 const SettingsApp = dynamic(() => import("@/components/apps/settings/settings-app").then(m => ({ default: m.SettingsApp })));
 const ITermApp = dynamic(() => import("@/components/apps/iterm/iterm-app").then(m => ({ default: m.ITermApp })));
@@ -53,6 +54,8 @@ const TextEditWindow = dynamic(() => import("@/components/apps/textedit").then(m
 const PreviewWindow = dynamic(() => import("@/components/apps/preview").then(m => ({ default: m.PreviewWindow })));
 const SafariApp = dynamic(() => import("@/components/apps/safari/safari-app").then(m => ({ default: m.SafariApp })));
 const MapsApp = dynamic(() => import("@/components/apps/maps/maps-app").then(m => ({ default: m.MapsApp })));
+const ActivityMonitorApp = dynamic(() => import("@/components/apps/activity-monitor/activity-monitor-app").then(m => ({ default: m.ActivityMonitorApp })));
+const CalculatorApp = dynamic(() => import("@/components/apps/calculator/calculator-app").then(m => ({ default: m.CalculatorApp })));
 
 type DesktopMode = "active" | "locked" | "sleeping" | "shuttingDown" | "restarting";
 
@@ -218,11 +221,16 @@ function DesktopContent({
   }, []);
 
   // Spotlight: Cmd+Space to open, Escape handled inside component
+  // Launchpad: F4 to open
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === " " && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setSpotlightOpen((prev) => !prev);
+      }
+      if (e.key === "F4") {
+        e.preventDefault();
+        setLaunchpadOpen((prev) => !prev);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -240,6 +248,8 @@ function DesktopContent({
   );
   const [appBadges, setAppBadges] = useState<Record<string, number>>({});
   const [spotlightOpen, setSpotlightOpen] = useState(false);
+  const [launchpadOpen, setLaunchpadOpen] = useState(false);
+  const [widgetEditMode, setWidgetEditMode] = useState(false);
   const [activeNotification, setActiveNotification] = useState<MessagesNotificationPayload | null>(null);
   const [isNotificationHovered, setIsNotificationHovered] = useState(false);
   const [messagesSelectRequest, setMessagesSelectRequest] = useState<MessagesConversationSelectRequest | null>(null);
@@ -735,6 +745,7 @@ function DesktopContent({
         onChangeWallpaper={() => { setSettingsPanel("wallpaper" as SettingsPanel); openWindow("settings"); }}
         onNewNote={() => openWindow("notes")}
         onGetInfo={() => { setSettingsCategory("general"); setSettingsPanel("about"); openWindow("settings"); }}
+        onEditWidgets={() => setWidgetEditMode(true)}
       >
         <Image
           src={getWallpaperPath(currentOS.id)}
@@ -746,7 +757,7 @@ function DesktopContent({
           unoptimized={currentOS.wallpaperFile?.endsWith(".svg")}
         />
       </DesktopContextMenu>
-      <DesktopWidgets />
+      <DesktopWidgets editMode={widgetEditMode} onExitEditMode={() => setWidgetEditMode(false)} onOpenApp={handleOpenApp} />
       <MenuBar
         onOpenSettings={handleOpenSettings}
         onOpenWifiSettings={handleOpenWifiSettings}
@@ -806,6 +817,14 @@ function DesktopContent({
 
           <Window appId="maps">
             <MapsApp inShell={true} />
+          </Window>
+
+          <Window appId="activity-monitor">
+            <ActivityMonitorApp inShell={true} />
+          </Window>
+
+          <Window appId="calculator">
+            <CalculatorApp inShell={true} />
           </Window>
 
           {visibleFinderWindows.map((windowState) => {
@@ -908,6 +927,7 @@ function DesktopContent({
           <Dock
             onTrashClick={handleTrashClick}
             onFinderClick={handleFinderDockClick}
+            onLaunchpadClick={() => setLaunchpadOpen(true)}
             appBadges={appBadges}
           />
           <MessagesNotificationBanner
@@ -923,6 +943,13 @@ function DesktopContent({
         <Spotlight
           onOpenApp={handleOpenApp}
           onClose={() => setSpotlightOpen(false)}
+        />
+      )}
+
+      {launchpadOpen && isActive && (
+        <Launchpad
+          onOpenApp={handleOpenApp}
+          onClose={() => setLaunchpadOpen(false)}
         />
       )}
 

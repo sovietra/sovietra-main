@@ -5,15 +5,16 @@ import { ChevronLeft, ChevronRight, RefreshCw, Plus, X } from "lucide-react";
 import { WindowControls } from "@/components/window-controls";
 import { useWindowNavBehavior } from "@/lib/use-window-nav-behavior";
 
-const HOME_URL = "https://sovietra.vercel.app/";
+const HOME_URL = "safari://home";
+const SOVIETRA_URL = "https://sovietra.vercel.app/";
 
 const QUICK_LINKS = [
-  { label: "YouTube", url: "https://www.youtube.com" },
-  { label: "Google", url: "https://www.google.com" },
-  { label: "Wikipedia", url: "https://en.wikipedia.org" },
-  { label: "GitHub", url: "https://github.com" },
-  { label: "Reddit", url: "https://www.reddit.com" },
-  { label: "X / Twitter", url: "https://x.com" },
+  { label: "sovietra", url: SOVIETRA_URL },
+  { label: "Praktijk Heemskerk", url: "https://praktijkheemskerk.online/" },
+  { label: "Het Hoofdburo", url: "https://www.hethoofdburo.nl/" },
+  { label: "Recyclefabriek", url: "https://scan.derecyclefabriek.nl/scan" },
+  { label: "HBO Quiz", url: "https://sovietra.github.io/HBO-Quiz-Keuzedeel/" },
+  { label: "Vista Karting", url: "https://sovietra.github.io/vista-karting/" },
 ];
 
 interface Tab {
@@ -30,7 +31,7 @@ function makeTab(url: string = HOME_URL): Tab {
   return {
     id: String(tabIdCounter++),
     url,
-    inputValue: url,
+    inputValue: url === HOME_URL ? "" : url,
     iframeKey: 0,
     title: url === HOME_URL ? "Home" : new URL(url).hostname.replace("www.", ""),
   };
@@ -55,6 +56,10 @@ export function SafariApp({ inShell, isMobile }: SafariAppProps) {
 
   const navigate = useCallback(
     (id: string, target: string) => {
+      if (target === HOME_URL) {
+        updateTab(id, { url: HOME_URL, inputValue: "", iframeKey: 0, title: "Home" });
+        return;
+      }
       let resolved = target.trim();
       if (!resolved.startsWith("http://") && !resolved.startsWith("https://")) {
         // treat as search query if it has spaces or no dot

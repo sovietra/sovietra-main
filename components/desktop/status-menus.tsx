@@ -164,7 +164,7 @@ export function WifiMenu({ isOpen, onClose, onOpenWifiSettings }: WifiMenuProps)
             <div className="flex items-center justify-center w-6 h-6 rounded-full bg-green-500">
               <Smartphone className="w-3 h-3 text-white" />
             </div>
-            <span className="text-xs flex-1">alana&apos;s iphone</span>
+            <span className="text-xs flex-1">shanya&apos;s iphone</span>
             <div className="flex items-center gap-1 text-muted-foreground can-hover:group-hover:text-white/70">
               <div className="flex items-end gap-px h-2.5">
                 <div className="w-0.5 h-1 bg-current rounded-full" />

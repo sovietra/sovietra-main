@@ -10,6 +10,7 @@ import { CalendarDockIcon } from "@/components/apps/calendar/calendar-dock-icon"
 interface DockProps {
   onTrashClick?: () => void;
   onFinderClick?: () => void;
+  onLaunchpadClick?: () => void;
   appBadges?: Record<string, number>;
 }
 
@@ -101,6 +102,7 @@ function getInitialDockScale(): number {
 export function Dock({
   onTrashClick,
   onFinderClick,
+  onLaunchpadClick,
   appBadges = {},
 }: DockProps) {
   const {
@@ -474,6 +476,47 @@ export function Dock({
           padding: `${metrics.padY}px ${metrics.padX}px`,
         }}
       >
+        {/* Launchpad */}
+        {onLaunchpadClick && (
+          <>
+            <button
+              onClick={onLaunchpadClick}
+              onMouseEnter={() => setHoveredApp("launchpad")}
+              onMouseLeave={() => setHoveredApp(null)}
+              className="group relative flex flex-col items-center outline-none transition-all duration-300 flex-shrink-0 can-hover:hover:scale-110 active:scale-95"
+            >
+              {hoveredApp === "launchpad" && !isResizingDock && (
+                <DockTooltip label="Launchpad" />
+              )}
+              <div
+                className="relative flex items-center justify-center"
+                style={{ width: `${metrics.icon}px`, height: `${metrics.icon}px` }}
+              >
+                <Image
+                  src="/launchpad.svg"
+                  alt="Launchpad"
+                  width={metrics.icon}
+                  height={metrics.icon}
+                  style={{ width: metrics.icon, height: metrics.icon }}
+                  className="object-contain [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.35))] pointer-events-none"
+                  draggable={false}
+                  unoptimized
+                />
+              </div>
+              <div className="rounded-full mt-1 opacity-0" style={{ width: `${metrics.dot}px`, height: `${metrics.dot}px` }} />
+            </button>
+            <div
+              className="bg-black/20 dark:bg-white/10 rounded-full self-center shrink-0"
+              style={{
+                width: `${metrics.dividerWidth}px`,
+                height: `${metrics.dividerHeight}px`,
+                marginLeft: `${metrics.dividerMarginX}px`,
+                marginRight: `${metrics.dividerMarginX}px`,
+              }}
+            />
+          </>
+        )}
+
         {appsToRender.map((app) => {
           const isOpen = hasOpenWindows(app.id);
           const animState = animationStates[app.id] || "stable";
@@ -505,9 +548,9 @@ export function Dock({
                   <Image
                     src={app.icon}
                     alt={app.name}
-                    width={app.id === "safari" ? Math.round(metrics.icon * 0.88) : metrics.icon}
-                    height={app.id === "safari" ? Math.round(metrics.icon * 0.88) : metrics.icon}
-                    style={app.icon.endsWith(".svg") ? { width: metrics.icon, height: metrics.icon } : undefined}
+                    width={["safari", "maps", "activity-monitor"].includes(app.id) ? Math.round(metrics.icon * 0.88) : metrics.icon}
+                    height={["safari", "maps", "activity-monitor"].includes(app.id) ? Math.round(metrics.icon * 0.88) : metrics.icon}
+                    style={app.icon.endsWith(".svg") ? { width: ["safari", "maps", "activity-monitor"].includes(app.id) ? Math.round(metrics.icon * 0.88) : metrics.icon, height: ["safari", "maps", "activity-monitor"].includes(app.id) ? Math.round(metrics.icon * 0.88) : metrics.icon } : undefined}
                     className="object-contain [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.35))] pointer-events-none"
                     draggable={false}
                     unoptimized

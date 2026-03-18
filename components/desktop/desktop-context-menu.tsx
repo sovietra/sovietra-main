@@ -1,13 +1,14 @@
 "use client";
 
 import * as ContextMenu from "@radix-ui/react-context-menu";
-import { StickyNote, Info, ImageIcon } from "lucide-react";
+import { StickyNote, Info, ImageIcon, LayoutDashboard } from "lucide-react";
 
 interface DesktopContextMenuProps {
   children: React.ReactNode;
   onChangeWallpaper: () => void;
   onNewNote: () => void;
   onGetInfo: () => void;
+  onEditWidgets: () => void;
 }
 
 export function DesktopContextMenu({
@@ -15,6 +16,7 @@ export function DesktopContextMenu({
   onChangeWallpaper,
   onNewNote,
   onGetInfo,
+  onEditWidgets,
 }: DesktopContextMenuProps) {
   return (
     <ContextMenu.Root>
@@ -26,6 +28,9 @@ export function DesktopContextMenu({
         >
           <MenuItem icon={<ImageIcon size={13} />} onClick={onChangeWallpaper}>
             Change Desktop Background…
+          </MenuItem>
+          <MenuItem icon={<LayoutDashboard size={13} />} onClick={onEditWidgets}>
+            Edit Widgets
           </MenuItem>
           <MenuItem icon={<StickyNote size={13} />} onClick={onNewNote}>
             New Note

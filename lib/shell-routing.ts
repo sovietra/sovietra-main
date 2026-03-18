@@ -18,6 +18,8 @@ const APP_ROUTE_SEGMENTS = {
   preview: "preview",
   safari: "safari",
   maps: "maps",
+  "activity-monitor": "activity-monitor",
+  calculator: "calculator",
 } as const;
 
 const APP_ROUTE_SEGMENT_SET = new Set(Object.keys(APP_ROUTE_SEGMENTS));

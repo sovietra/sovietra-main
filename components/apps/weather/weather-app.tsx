@@ -165,12 +165,13 @@ function serializeWeatherDataForCache(weatherByCity: Record<string, CityWeather>
 }
 
 const DEFAULT_CITIES: CityConfig[] = [
-  { id: "san-francisco", name: "San Francisco", latitude: 37.78, longitude: -122.42 },
-  { id: "seattle", name: "Seattle", latitude: 47.61, longitude: -122.33 },
-  { id: "los-angeles", name: "Los Angeles", latitude: 34.05, longitude: -118.24 },
-  { id: "new-york", name: "New York", latitude: 40.71, longitude: -74.01 },
-  { id: "london", name: "London", latitude: 51.51, longitude: -0.13 },
-  { id: "paris", name: "Paris", latitude: 48.86, longitude: 2.35 },
+  { id: "heerlen", name: "Heerlen", latitude: 50.89, longitude: 5.98 },
+  { id: "amsterdam", name: "Amsterdam", latitude: 52.37, longitude: 4.90 },
+  { id: "rotterdam", name: "Rotterdam", latitude: 51.92, longitude: 4.48 },
+  { id: "the-hague", name: "The Hague", latitude: 52.08, longitude: 4.31 },
+  { id: "utrecht", name: "Utrecht", latitude: 52.09, longitude: 5.12 },
+  { id: "eindhoven", name: "Eindhoven", latitude: 51.44, longitude: 5.48 },
+  { id: "groningen", name: "Groningen", latitude: 53.22, longitude: 6.57 },
 ];
 
 const OPEN_METEO_GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
@@ -370,6 +371,7 @@ async function fetchCityWeather(city: CityConfig): Promise<CityWeather> {
     ],
     hourlyFields: ["temperature_2m", "weather_code", "precipitation_probability"],
     forecastDays: 10,
+    temperatureUnit: "celsius",
   });
 
   let res: Response | null = null;

@@ -410,7 +410,7 @@ function WeatherWidget({
         )}
         {!loading && weather && (
           <>
-            <p className="text-sm font-medium">San Francisco</p>
+            <p className="text-sm font-medium">Heerlen</p>
             <p className="text-4xl font-light mt-0.5">{Math.round(weather.temp)}°</p>
             <div className="flex items-center gap-1.5 mt-3">
               <div className={iconClassName}>{weatherInfo?.icon}</div>
@@ -455,11 +455,12 @@ export function NotificationCenter({
       try {
         const res = await fetch(
           buildOpenMeteoForecastUrl({
-            latitude: 37.78,
-            longitude: -122.42,
+            latitude: 50.89,
+            longitude: 5.98,
             currentFields: ["temperature_2m", "weather_code"],
             dailyFields: ["temperature_2m_max", "temperature_2m_min"],
             forecastDays: 1,
+            temperatureUnit: "celsius",
           })
         );
         if (!res.ok) return;
