@@ -1,4 +1,4 @@
-# [alanagoyal.com](https://alanagoyal.com)
+# [sovietra.com](https://sovietra.com)
 
 i'm obsessed with re-creating apple products. this is a macos-inspired personal website featuring a full desktop environment with multiple apps.
 
