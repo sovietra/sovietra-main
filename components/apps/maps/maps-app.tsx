@@ -818,7 +818,7 @@ export function MapsApp({ inShell, isMobile }: MapsAppProps) {
               onClick={() => setViewMode("globe")}>
               Globe
             </button>
-            <button className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] transition-all ${(viewMode as ViewMode)==="map"?"bg-white/20 text-white":"text-white/40 hover:text-white/60"}`}
+            <button className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] transition-all ${(viewMode as string)==="map"?"bg-white/20 text-white":"text-white/40 hover:text-white/60"}`}
               onClick={() => setViewMode("map")}>
               <MapIcon size={10} /> Map
             </button>
